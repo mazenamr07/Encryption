@@ -31,7 +31,7 @@ int main() {
         cout << "\nWhich Cipher would you like to choose?" << endl;
         cout << "1- First cypher\n"
                 "2- Second cypher\n"
-                "3- Third cypher\n"
+                "3- XOR Cypher\n"
                 "4- Return\n" << ">>";
 
         getline(cin, choice_2);
@@ -46,6 +46,22 @@ int main() {
             continue;
         }
 
-        cout << choice_1 << "and" << choice_2;
+        if (choice_1 == "1") {
+            if (choice_2 == "1") {
+                cout << "1 and 1";
+            } else if (choice_2 == "2") {
+                cout << "1 and 2";
+            } else {
+                cout << "1 and 3";
+            }
+        } if (choice_1 == "2") {
+            if (choice_2 == "1") {
+                cout << "2 and 1";
+            } else if (choice_2 == "2") {
+                cout << "2 and 2";
+            } else {
+                cout << "2 and 3";
+            }
+        }
     }
 }
