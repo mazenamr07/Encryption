@@ -1,22 +1,32 @@
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <bitset>
 #include <vector>
 #include <cmath>
 
 using namespace std;
 
-// Function for encrypting with the XOR Cypher
-void xor_cypher(const string& message, char key, string& cypher, string& hex_cypher) {
+// Function for encrypting using the XOR Cypher
+void xor_cypher(const string& message, const string& key, string& cypher, string& hex_cypher) {
     vector<bitset<8>> bin_list;
+    vector<bitset<8>> key_list;
 
     // turn key into a set of 8 bits
-    bitset<8> bin_key(key);
+    for (char i : key) {
+        bitset<8> bin_key(i);
+        key_list.push_back(bin_key);
+    }
 
     // turn each character of the message into a set of 8 bits
+    int kcnt = 0;
     for (char i : message) {
         bitset<8> bin_char(i);
-        bitset bin_cypher = bin_char ^ bin_key;
+        bitset bin_cypher = bin_char ^ key_list[kcnt];
+        kcnt++;
+        if (kcnt == key.size()) {
+            kcnt = 0;
+        }
+
         // store each binary set in a vector
         bin_list.push_back(bin_cypher);
     }
@@ -76,6 +86,11 @@ void xor_cypher(const string& message, char key, string& cypher, string& hex_cyp
             hex_cypher += static_cast<char>(sum_2 + 48);
         } hex_cypher += ' ';
     }
+
+}
+
+// Function for decrypting using the XOR Cypher
+void xor_decipher(const string& cypher, const string& hex_cypher, char key, string& message) {
 
 }
 
@@ -148,6 +163,9 @@ int smain() {
 }
 
 int main() {
-
+    string a, b;
+    xor_cypher("abcdefgh_ABCDEFG", "mazen", a, b);
+    cout << a << endl;
+    cout << b;
     return 0;
 }
