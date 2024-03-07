@@ -1,10 +1,17 @@
 #include <iostream>
-#include <cstring>
 #include <bitset>
 #include <vector>
 #include <cmath>
+#include <algorithm>
+
 
 using namespace std;
+
+// Function for erasing spaces from a string
+string removeSpaces(string str) {
+    str.erase(remove(str.begin(), str.end(), ' '), str.end());
+    return str;
+}
 
 // Function for encrypting using the XOR Cypher
 void xor_cypher(const string& message, const string& key, string& cypher, string& hex_cypher) {
@@ -89,9 +96,75 @@ void xor_cypher(const string& message, const string& key, string& cypher, string
 
 }
 
-// Function for decrypting using the XOR Cypher
-void xor_decipher(const string& cypher, const string& hex_cypher, char key, string& message) {
+// Function for decrypting Hexadecimal Hash using the XOR Cypher
+void xor_decipher(const string& hex_cypher, const string& key, string& message) {
+    vector<string> bin_list;
+    vector<bitset<8>> key_list;
 
+    // turn key into a set of 8 bits
+    for (char i : key) {
+        bitset<8> bin_key(i);
+        key_list.push_back(bin_key);
+    }
+
+    // Taking each Hexadecimal pair and converting them to a string of 8 characters
+    string sp_hex_cypher = removeSpaces(hex_cypher); // removing spaces from the hash
+
+    int hcnt = 0;
+    string temp_str;
+    for (char i : sp_hex_cypher) {
+        if (i == '1') {
+            temp_str.append("0001");
+        } else if (i == '2') {
+            temp_str.append("0010");
+        } else if (i == '3') {
+            temp_str.append("0011");
+        } else if (i == '4') {
+            temp_str.append("0100");
+        } else if (i == '5') {
+            temp_str.append("0101");
+        } else if (i == '6') {
+            temp_str.append("0110");
+        } else if (i == '7') {
+            temp_str.append("0111");
+        } else if (i == '8') {
+            temp_str.append("1000");
+        } else if (i == '9') {
+            temp_str.append("1001");
+        } else if (i == 'A' or i == 'a') {
+            temp_str.append("1010");
+        } else if (i == 'B' or i == 'b') {
+            temp_str.append("1011");
+        } else if (i == 'C' or i == 'c') {
+            temp_str.append("1100");
+        } else if (i == 'D' or i == 'd') {
+            temp_str.append("1101");
+        } else if (i == 'E' or i == 'e') {
+            temp_str.append("1110");
+        } else if (i == 'F' or i == 'f') {
+            temp_str.append("1111");
+        }
+        hcnt++; // to loop every two characters
+        if (hcnt == 2) {
+            hcnt = 0;
+            bin_list.push_back(temp_str);
+            temp_str = "";
+        }
+    }
+
+    // using each string for decryption
+    int kcnt = 0;
+    for (const string& j : bin_list) {
+        bitset<8> bin(j);
+        bitset<8> xor_bin = bin ^ key_list[kcnt];
+        kcnt++;
+        if (kcnt == key.size()) {
+            kcnt = 0;
+        }
+
+        unsigned long asc = xor_bin.to_ulong(); // turn string to bitset then convert it to ASCII
+        message += static_cast<char>(asc); // add each character to a string for later display
+    }
 }
 
 int smain() {
@@ -162,10 +235,19 @@ int smain() {
     }
 }
 
+int dmain() {
+    string a, b, c, d, e;
+    getline(cin, a);
+    getline(cin ,b);
+    xor_cypher(a, b, d, e);
+    cout << d << endl;
+    cout << e;
+}
+
 int main() {
-    string a, b;
-    xor_cypher("abcdefgh_ABCDEFG", "mazen", a, b);
-    cout << a << endl;
-    cout << b;
-    return 0;
+    string a, b, c, d, e;
+    getline(cin, a);
+    getline(cin ,b);
+    xor_decipher(a, b, c);
+    cout << c << endl;
 }
