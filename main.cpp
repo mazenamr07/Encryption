@@ -7,10 +7,9 @@
 using namespace std;
 
 // Function for encrypting with the XOR Cypher
-void xor_cypher(const string& message, char key) {
+void xor_cypher(const string& message, char key, string& cypher, string& hex_cypher) {
     vector<bitset<8>> bin_list;
-    string cypher;
-    string hex_cypher;
+
     // turn key into a set of 8 bits
     bitset<8> bin_key(key);
 
@@ -58,7 +57,7 @@ void xor_cypher(const string& message, char key) {
         } else if (sum_1 == 15) {
             hex_cypher += 'F';
         } else {
-            hex_cypher += sum_1 + 48;
+            hex_cypher += static_cast<char>(sum_1 + 48);
         }
         // second half letter check
         if (sum_2 == 10) {
@@ -74,11 +73,10 @@ void xor_cypher(const string& message, char key) {
         } else if (sum_2 == 15) {
             hex_cypher += 'F';
         } else {
-            hex_cypher += sum_2 + 48;
+            hex_cypher += static_cast<char>(sum_2 + 48);
         } hex_cypher += ' ';
     }
 
-    cout << cypher << endl << hex_cypher << endl;
 }
 
 int smain() {
@@ -150,6 +148,6 @@ int smain() {
 }
 
 int main() {
-    xor_cypher("mazen amr mohammed", 'P');
+
     return 0;
 }
