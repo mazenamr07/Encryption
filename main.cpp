@@ -7,9 +7,10 @@
 using namespace std;
 
 // Function for encrypting with the XOR Cypher
-string xor_cypher(const string& message, char key) {
+void xor_cypher(const string& message, char key) {
     vector<bitset<8>> bin_list;
     string cypher;
+    string hex_cypher;
     // turn key into a set of 8 bits
     bitset<8> bin_key(key);
 
@@ -22,26 +23,62 @@ string xor_cypher(const string& message, char key) {
     }
     // use each binary set for encryption
     for (bitset i : bin_list) {
-        unsigned long cypher_char = i.to_ulong(); // turn each binary set into ASCII then convert it to character
+        unsigned long cypher_char = i.to_ulong(); // turn binary set to ASCII then convert it to character
         cypher += static_cast<char>(cypher_char); // add each character to a string for later display
-        string temp_char = i.to_string(); // turn binary set to string of numbers
+        string temp_str = i.to_string(); // turn binary set to string of numbers
 
-        int digit;
-        double sum = 0;
-        int power = 7;
-
-        for (char j : temp_char) {
-            if (j == '0') {
-                digit = 0;
-            } else {
-                digit = 1;
-            }
-            double hama = pow(16, power) * digit;
-            power -= 1;
-            cout << hama << endl;
+        // slicing the string into two halves
+        string front_temp_str;
+        for (int j = 0; j < 4; j++) {
+            front_temp_str.push_back(temp_str[j]);
         }
+        string back_temp_str;
+        for (int j = 0; j < 4; j++) {
+            back_temp_str.push_back(temp_str[j + 4]);
+        }
+
+        // converting each half to its hexadecimal representation
+        int k = 0;
+        double sum_1 = 0, sum_2 = 0;
+        for (int j = 3; j >= 0; j--, k++) {
+            sum_1 += pow(2, j) * (front_temp_str[k] - 48);
+            sum_2 += pow(2, j) * (back_temp_str[k] - 48);
+        }
+        // first half letter check
+        if (sum_1 == 10) {
+            hex_cypher += 'A';
+        } else if (sum_1 == 11) {
+            hex_cypher += 'B';
+        } else if (sum_1 == 12) {
+            hex_cypher += 'C';
+        } else if (sum_1 == 13) {
+            hex_cypher += 'D';
+        } else if (sum_1 == 14) {
+            hex_cypher += 'E';
+        } else if (sum_1 == 15) {
+            hex_cypher += 'F';
+        } else {
+            hex_cypher += sum_1 + 48;
+        }
+        // second half letter check
+        if (sum_2 == 10) {
+            hex_cypher += 'A';
+        } else if (sum_2 == 11) {
+            hex_cypher += 'B';
+        } else if (sum_2 == 12) {
+            hex_cypher += 'C';
+        } else if (sum_2 == 13) {
+            hex_cypher += 'D';
+        } else if (sum_2 == 14) {
+            hex_cypher += 'E';
+        } else if (sum_2 == 15) {
+            hex_cypher += 'F';
+        } else {
+            hex_cypher += sum_2 + 48;
+        } hex_cypher += ' ';
     }
 
+    cout << cypher << endl << hex_cypher << endl;
 }
 
 int smain() {
@@ -113,6 +150,6 @@ int smain() {
 }
 
 int main() {
-    cout << xor_cypher("mazen", 'P');
+    xor_cypher("mazen amr mohammed", 'P');
     return 0;
 }
