@@ -1,15 +1,15 @@
 // FCAI – Structured Programming – 2024 - Assignment 2
 // Program Name: CS112_A2_T2_SectionNum_20230308_***_***.cpp
 // Program Description: This is a tool to cypher and decipher messages using:
-//                      1- *** Cypher, 2- *** Cypher, 3- XOR Cypher
+//                      1- *** Cypher, 2- Baconian Cypher, 3- XOR Cypher
 // Last Modification Date: 10/3/2024
 // Author 1: Mazen Amr Mohammed Morsy - ID: 20230308 - Section: 28
-// Author 2: *** *** *** - ID: *** - Section: 28
+// Author 2: Mohamed Ahmed Abdelfattah Mohamed - ID: 20230314 - Section: 28
 // Author 3: *** *** *** - ID: *** - Section: 28
 // Teaching Assistant: xxxxx xxxxx
 // Who did what:
 //      Mazen Amr: Worked on the menu and algorithm and code for XOR Cypher
-//      *** ***:
+//      Mohamed Ahmed: Worked on algorithm and code for Baconian Cypher
 //      *** ***:
 
 #include <iostream>
@@ -18,6 +18,7 @@
 #include <cmath>
 #include <algorithm>
 #include <cctype>
+#include <unordered_map>
 
 using namespace std;
 
@@ -219,7 +220,7 @@ int main() {
         }
 
         if (choice_2 == "4") {
-            cout << "Choose again:" << endl;
+            cout << "\nChoose again:" << endl;
             continue;
         }
 
