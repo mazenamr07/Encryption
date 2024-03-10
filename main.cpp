@@ -188,12 +188,13 @@ void poly_cypher(const string& text, const string& key, string& cyph_txt) {
     // Cyphering text using table
     string cypher_txt;
     for (char i : text) {
-        i = tolower(i); // forcing capitalized characters into lowercase
         if (!isalpha(i)) { // Skipping non-alphabetical characters
             cypher_txt += i;
             continue;
         }
-        else if (i == 'j') { // 'j' to 'i' for cyphering
+        i |= 32; // forcing capitalized characters into lowercase
+
+        if (i == 'j') { // 'j' to 'i' for cyphering
             i = 'i';
         }
         for (int j = 0; j < 5; j++) {
@@ -290,13 +291,13 @@ int main() {
         }
 
         if (choice_1 == "1") { // Encrypting messages
-            if (choice_2 == "1") { // First cypher
+            if (choice_2 == "1") { // Enc First cypher
                 cout << "1 and 1";
             }
-            else if (choice_2 == "2") { // Second cypher
+            else if (choice_2 == "2") { // Enc Second cypher
                 cout << "1 and 2";
             }
-            else { // XOR cypher
+            else { // Enc XOR cypher
                 string message, key, cypher, hex_cypher;
                 cout << "Enter the message you wish to encrypt:" << endl << ">>";
                 getline(cin, message);
@@ -359,13 +360,13 @@ int main() {
             }
         }
         if (choice_1 == "2") { // Decrypting messages
-            if (choice_2 == "1") { // First cypher
+            if (choice_2 == "1") { // Dec First cypher
                 cout << "2 and 1";
             }
-            else if (choice_2 == "2") { // Second cypher
+            else if (choice_2 == "2") { // Dec Second cypher
                 cout << "2 and 2";
             }
-            else { // XOR cypher
+            else { // Dec XOR cypher
                 string choice_xor;
                 // choice between decrypting a message or a hexadecimal hash
                 cout << "What would you like to decipher:\n"
@@ -527,11 +528,4 @@ int main() {
 
 
     }
-}
-
-int smain() {
-    string before, after;
-    poly_cypher("I Love Orange Juice!!!", "34125", before);
-    poly_decipher(before,"34125", after);
-    cout << before << endl << after;
 }
