@@ -1,17 +1,3 @@
-// FCAI – Structured Programming – 2024 - Assignment 2
-// Program Name: CS112_A2_T2_SectionNum_20230308_***_***.cpp
-// Program Description: This is a tool to cypher and decipher messages using:
-//                      1- *** Cypher, 2- Baconian Cypher, 3- XOR Cypher
-// Last Modification Date: 10/3/2024
-// Author 1: Mazen Amr Mohammed Morsy - ID: 20230308 - Section: 28
-// Author 2: Mohamed Ahmed Abdelfattah Mohamed - ID: 20230314 - Section: 28
-// Author 3: *** *** *** - ID: *** - Section: 28
-// Teaching Assistant: xxxxx xxxxx
-// Who did what:
-//      Mazen Amr: Worked on the menu and algorithm and code for XOR Cypher
-//      Mohamed Ahmed: Worked on algorithm and code for Baconian Cypher
-//      *** ***:
-
 #include <iostream>
 #include <bitset>
 #include <vector>
@@ -248,20 +234,20 @@ void poly_decipher(const string& cyph_txt, const string& key, string& text) {
             continue;
         }
 
-        if (counter % 2 == 0) {
+        if (counter % 2 == 0) { // Taking the first digit as row number
             i_row = static_cast<char>(i) - 49;
-        } else {
+        } else { // Taking the second digit as column number
             i_col = static_cast<char>(i) - 49;
         }
         counter++;
-        if (counter % 2 == 0) {
+        if (counter % 2 == 0) { // Adding the character after every two digits
             b_txt += table[i_row][i_col];
         }
     }
     text = b_txt;
 }
 
-int smain() {
+int main() {
     // menu start and choice
     cout << "Ahlan ya user ya habibi.\n"
             "What would you like to do today?\n";
@@ -543,7 +529,7 @@ int smain() {
     }
 }
 
-int main() {
+int smain() {
     string before, after;
     poly_cypher("I Love Orange Juice!!!", "34125", before);
     poly_decipher(before,"34125", after);
