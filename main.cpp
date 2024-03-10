@@ -15,10 +15,10 @@
 #include <iostream>
 #include <bitset>
 #include <vector>
+#include <string>
 #include <cmath>
 #include <algorithm>
 #include <cctype>
-#include <unordered_map>
 
 using namespace std;
 
@@ -28,7 +28,7 @@ string removeSpaces(string str) {
     return str;
 }
 
-// Function for encrypting using the XOR Cypher
+// Function for encrypting text using the XOR Cypher
 void xor_cypher(const string& message, const string& key, string& cypher, string& hex_cypher) {
     vector<bitset<8>> bin_list;
     vector<bitset<8>> key_list;
@@ -182,7 +182,46 @@ void xor_decipher(const string& hex_cypher, const string& key, string& message) 
     }
 }
 
-int main() {
+// Function for encrypting text using the Poly Cypher
+void poly_cypher(const string& text, const string& key) {
+    // Making the alphabet table with key
+    char table[5][5];
+    int k = 97; // 'a' in ASCII
+    for (char i : key) {
+        int row = i - 49;
+        for (char j : key) {
+            int col = j - 49;
+            if (k == 106) {
+                k = 107;
+            }
+            table[row][col] = static_cast<char>(k);
+            k++;
+        }
+    }
+
+    // Cyphering text using table
+    string cypher_txt;
+    for (char i : text) {
+        if (!isalpha(i)) {
+            cypher_txt += i;
+            continue;
+        }
+        else if (i == 'j') { // 'j' to 'i' for cyphering
+            i = 'i';
+        }
+        for (int j = 0; j < 5; j++) {
+            for (int n = 0; n < 5; n++) {
+                if (table[j][n] == i) {
+                    cypher_txt += to_string(j + 1);
+                    cypher_txt += to_string(n + 1);
+                }
+            }
+        }
+    }
+    cout << cypher_txt;
+}
+
+int smain() {
     // menu start and choice
     cout << "Ahlan ya user ya habibi.\n"
             "What would you like to do today?\n";
@@ -464,19 +503,6 @@ int main() {
     }
 }
 
-int dmain() {
-    string a, b, c, d, e;
-    getline(cin, a);
-    getline(cin ,b);
-    xor_cypher(a, b, d, e);
-    cout << d << endl;
-    cout << e;
-}
-
-int smain() {
-    string a, b, c, d, e;
-    getline(cin, a);
-    getline(cin ,b);
-    xor_decipher(a, b, c);
-    cout << c << endl;
+int main() {
+    poly_cypher("i l!ov?e c++??","14325");
 }
