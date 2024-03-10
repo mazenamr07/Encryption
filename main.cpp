@@ -182,8 +182,8 @@ void xor_decipher(const string& hex_cypher, const string& key, string& message) 
     }
 }
 
-// Function for encrypting text using the Poly Cypher
-void poly_cypher(const string& text, const string& key) {
+// Function for encrypting text using the Polybius Cypher
+void poly_cypher(const string& text, const string& key, string& cyph_txt) {
     // Making the alphabet table with key
     char table[5][5];
     int k = 97; // 'a' in ASCII
@@ -202,7 +202,8 @@ void poly_cypher(const string& text, const string& key) {
     // Cyphering text using table
     string cypher_txt;
     for (char i : text) {
-        if (!isalpha(i)) {
+        i = tolower(i); // forcing capitalized characters into lowercase
+        if (!isalpha(i)) { // Skipping non-alphabetical characters
             cypher_txt += i;
             continue;
         }
@@ -218,7 +219,46 @@ void poly_cypher(const string& text, const string& key) {
             }
         }
     }
-    cout << cypher_txt;
+    cyph_txt = cypher_txt;
+}
+
+// Function for decrypting text using the Polybius Cypher
+void poly_decipher(const string& cyph_txt, const string& key, string& text) {
+    // Making the alphabet table with key
+    char table[5][5];
+    int k = 97; // 'a' in ASCII
+    for (char i : key) {
+        int row = i - 49;
+        for (char j : key) {
+            int col = j - 49;
+            if (k == 106) {
+                k = 107;
+            }
+            table[row][col] = static_cast<char>(k);
+            k++;
+        }
+    }
+
+    // Deciphering text using table
+    string b_txt;
+    int counter = 0, i_row, i_col;
+    for (char i : cyph_txt) {
+        if (!isdigit(i)) { // Skipping non-digit characters
+            b_txt += i;
+            continue;
+        }
+
+        if (counter % 2 == 0) {
+            i_row = static_cast<char>(i) - 49;
+        } else {
+            i_col = static_cast<char>(i) - 49;
+        }
+        counter++;
+        if (counter % 2 == 0) {
+            b_txt += table[i_row][i_col];
+        }
+    }
+    text = b_txt;
 }
 
 int smain() {
@@ -504,5 +544,8 @@ int smain() {
 }
 
 int main() {
-    poly_cypher("i l!ov?e c++??","14325");
+    string before, after;
+    poly_cypher("I Love Orange Juice!!!", "34125", before);
+    poly_decipher(before,"34125", after);
+    cout << before << endl << after;
 }
