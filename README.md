@@ -10,7 +10,7 @@ then select a cypher, then put in your message.
 + *** Cypher
 + Polybius Square Cypher, notes:
   + Special characters don't get encrypted
-  + This cypher can't encrypt numbers
+  + Cypher doesn't accept numbers as input
 + XOR Cypher, outputs:
   + Cyphered message
   + Hexadecimal hash to use for deciphering
