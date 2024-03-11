@@ -8,16 +8,10 @@ then select a cypher, then put in your message.
 
 #### List of cyphers available:
 + *** Cypher
-
-
 + Polybius Square Cypher, notes:
   + Special characters don't get encrypted
-  + Cypher doesn't accept numbers as input
-
-
+  + This cypher can't encrypt numbers
 + XOR Cypher, outputs:
   + Cyphered message
   + Hexadecimal hash to use for deciphering
-  
-
 + *** Cypher
