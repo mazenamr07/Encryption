@@ -9,4 +9,4 @@ if (WIN32)
     set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 endif()
 
-add_executable(Encryption src/main.cpp src/utils.cpp)
+add_executable(Encryption main.cpp)
