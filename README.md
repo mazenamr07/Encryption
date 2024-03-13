@@ -19,7 +19,7 @@ cd build
 ```Bash
 cmake ..
 ```
-3. Buils the project:
+3. Build the project:
 ```Bash
 make
 ```
