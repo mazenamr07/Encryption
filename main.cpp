@@ -26,8 +26,8 @@ bool choiceCheck(const string& choice) {
     return false;
 }
 
-// Function for encrypting text using the XOR Cypher
-void xor_cypher(const string& message, const string& key, string& cypher, string& hex_cypher) {
+// Function for encrypting text using the XOR Cipher
+void xorCipher(const string& message, const string& key, string& cipher, string& hex_cipher) {
     vector<bitset<8>> bin_list;
     vector<bitset<8>> key_list;
 
@@ -41,19 +41,19 @@ void xor_cypher(const string& message, const string& key, string& cypher, string
     int kcnt = 0;
     for (char i : message) {
         bitset<8> bin_char(i);
-        bitset bin_cypher = bin_char ^ key_list[kcnt];
+        bitset bin_cipher = bin_char ^ key_list[kcnt];
         kcnt++;
         if (kcnt == key.size()) {
             kcnt = 0;
         }
 
         // store each binary set in a vector
-        bin_list.push_back(bin_cypher);
+        bin_list.push_back(bin_cipher);
     }
     // use each binary set for encryption
     for (bitset i : bin_list) {
-        unsigned long cypher_char = i.to_ulong(); // turn binary set to ASCII then convert it to character
-        cypher += static_cast<char>(cypher_char); // add each character to a string for later display
+        unsigned long cipher_char = i.to_ulong(); // turn binary set to ASCII then convert it to character
+        cipher += static_cast<char>(cipher_char); // add each character to a string for later display
         string temp_str = i.to_string(); // turn binary set to string of numbers
 
         // slicing the string into two halves
@@ -75,42 +75,42 @@ void xor_cypher(const string& message, const string& key, string& cypher, string
         }
         // first half letter check
         if (sum_1 == 10) {
-            hex_cypher += 'A';
+            hex_cipher += 'A';
         } else if (sum_1 == 11) {
-            hex_cypher += 'B';
+            hex_cipher += 'B';
         } else if (sum_1 == 12) {
-            hex_cypher += 'C';
+            hex_cipher += 'C';
         } else if (sum_1 == 13) {
-            hex_cypher += 'D';
+            hex_cipher += 'D';
         } else if (sum_1 == 14) {
-            hex_cypher += 'E';
+            hex_cipher += 'E';
         } else if (sum_1 == 15) {
-            hex_cypher += 'F';
+            hex_cipher += 'F';
         } else {
-            hex_cypher += static_cast<char>(sum_1 + 48);
+            hex_cipher += static_cast<char>(sum_1 + 48);
         }
         // second half letter check
         if (sum_2 == 10) {
-            hex_cypher += 'A';
+            hex_cipher += 'A';
         } else if (sum_2 == 11) {
-            hex_cypher += 'B';
+            hex_cipher += 'B';
         } else if (sum_2 == 12) {
-            hex_cypher += 'C';
+            hex_cipher += 'C';
         } else if (sum_2 == 13) {
-            hex_cypher += 'D';
+            hex_cipher += 'D';
         } else if (sum_2 == 14) {
-            hex_cypher += 'E';
+            hex_cipher += 'E';
         } else if (sum_2 == 15) {
-            hex_cypher += 'F';
+            hex_cipher += 'F';
         } else {
-            hex_cypher += static_cast<char>(sum_2 + 48);
-        } hex_cypher += ' ';
+            hex_cipher += static_cast<char>(sum_2 + 48);
+        } hex_cipher += ' ';
     }
 
 }
 
-// Function for decrypting Hexadecimal Hash using the XOR Cypher
-void xor_decipher(const string& hex_cypher, const string& key, string& message) {
+// Function for decrypting Hexadecimal Hash using the XOR Cipher
+void xorDecipher(const string& hex_cipher, const string& key, string& message) {
     vector<string> bin_list;
     vector<bitset<8>> key_list;
 
@@ -121,11 +121,11 @@ void xor_decipher(const string& hex_cypher, const string& key, string& message) 
     }
 
     // Taking each Hexadecimal pair and converting them to a string of 8 characters
-    string sp_hex_cypher = removeSpaces(hex_cypher); // removing spaces from the hash
+    string sp_hex_cipher = removeSpaces(hex_cipher); // removing spaces from the hash
 
     int hcnt = 0;
     string temp_str;
-    for (char i : sp_hex_cypher) {
+    for (char i : sp_hex_cipher) {
         if (i == '1') {
             temp_str.append("0001");
         } else if (i == '2') {
@@ -180,8 +180,8 @@ void xor_decipher(const string& hex_cypher, const string& key, string& message) 
     }
 }
 
-// Function for encrypting text using the Polybius Cypher
-void poly_cypher(const string& text, const string& key, string& cyph_txt) {
+// Function for encrypting text using the Polybius Square Cipher
+void polyCipher(const string& text, const string& key, string& cyph_txt) {
     // Making the alphabet table with key
     char table[5][5];
     int k = 97; // 'a' in ASCII
@@ -197,32 +197,32 @@ void poly_cypher(const string& text, const string& key, string& cyph_txt) {
         }
     }
 
-    // Cyphering text using table
-    string cypher_txt;
+    // Ciphering text using table
+    string cipher_txt;
     for (char i : text) {
         if (!isalpha(i)) { // Skipping non-alphabetical characters
-            cypher_txt += i;
+            cipher_txt += i;
             continue;
         }
         i |= 32; // forcing capitalized characters into lowercase
 
-        if (i == 'j') { // 'j' to 'i' for cyphering
+        if (i == 'j') { // 'j' to 'i' for ciphering
             i = 'i';
         }
         for (int j = 0; j < 5; j++) {
             for (int n = 0; n < 5; n++) {
                 if (table[j][n] == i) {
-                    cypher_txt += to_string(j + 1);
-                    cypher_txt += to_string(n + 1);
+                    cipher_txt += to_string(j + 1);
+                    cipher_txt += to_string(n + 1);
                 }
             }
         }
     }
-    cyph_txt = cypher_txt;
+    cyph_txt = cipher_txt;
 }
 
-// Function for decrypting text using the Polybius Cypher
-void poly_decipher(const string& cyph_txt, const string& key, string& text) {
+// Function for decrypting text using the Polybius Square Cipher
+void polyDecipher(const string& cyph_txt, const string& key, string& text) {
     // Making the alphabet table with key
     char table[5][5];
     int k = 97; // 'a' in ASCII
@@ -258,6 +258,94 @@ void poly_decipher(const string& cyph_txt, const string& key, string& text) {
         }
     }
     text = b_txt;
+}
+
+// Function for encrypting text using Morse Code
+void morseCipher(const string& message, string& cipher) {
+    // Making a Morse Code list
+    vector<string> morseList = {"-----", ".----", "..---", "...--", "....-", ".....",
+                                "-....", "--...", "---..", "----.",
+                                ".-", "-...", "-.-.", "-..", ".", "..-.", "--.",
+                                "....", "..", ".---", "-.-", ".-..", "--", "-.",
+                                "---", ".--.", "--.-", ".-.", "...", "-", "..-",
+                                "...-", ".--", "-..-", "-.--", "--.."};
+
+    // Ciphering text using the list
+    for (char i : message) {
+        if (!isdigit(i) and !isalpha(i) and i != 32) {
+            cipher += i;
+            continue;
+        }
+        if (i == 32) {
+            cipher += "  ";
+            continue;
+        }
+        if (i > 96) {
+            i -= 87;
+            cipher += morseList[i];
+            cipher += ' ';
+            continue;
+        }
+        if (i > 64) {
+            i -= 55;
+            cipher += morseList[i];
+            cipher += ' ';
+            continue;
+        }
+        i -= 48;
+        cipher += morseList[i];
+        cipher += ' ';
+    }
+}
+
+// Function for decrypting text using Morse Code
+void morseDecipher(string cipher, string& message) {
+    cipher += ' ';
+    // Making a Morse Code list
+    vector<string> morseList = {"-----", ".----", "..---", "...--", "....-", ".....",
+                                "-....", "--...", "---..", "----.",
+                                ".-", "-...", "-.-.", "-..", ".", "..-.", "--.",
+                                "....", "..", ".---", "-.-", ".-..", "--", "-.",
+                                "---", ".--.", "--.-", ".-.", "...", "-", "..-",
+                                "...-", ".--", "-..-", "-.--", "--.."};
+
+    // Deciphering text using the list
+    string temp;
+    int tempSpace = 0;
+    for (char i : cipher) {
+        if (i != '.' and i != '-' and i != ' ') {
+            message += i;
+//            tempSpace = 0;
+            continue;
+        }
+        if (i == 32) {
+            if (tempSpace == 1) {
+                tempSpace++;
+                continue;
+            }
+            else if (tempSpace == 2) {
+                message += " ";
+                tempSpace = 0;
+                continue;
+            }
+            tempSpace++;
+
+            auto it = find(morseList.begin(), morseList.end(), temp);
+            if (it != morseList.end()) {
+                int index = it - morseList.begin();
+                if (index < 10) {
+                    message += static_cast<char>(index + 48);
+                }
+                else {
+                    message += static_cast<char>(index + 87);
+                }
+            }
+            temp = "";
+            continue;
+        }
+        temp += i;
+        tempSpace = 0;
+    }
 }
 
 void menu() {
@@ -303,14 +391,14 @@ void menu() {
             switch(stoi(choice_2)) {
                 case 1: // Enc Morse Cipher
                 {
-                    string message, cypher;
+                    string message, cipher;
 
                 }
                     break;
 
                 case 2: // Enc Polybius Cipher
                 {
-                    string message, key, cypher;
+                    string message, key, cipher;
                     cout << "Enter the message you wish to encrypt:" << endl << ">>";
                     getline(cin, message);
 
@@ -356,14 +444,14 @@ void menu() {
                         }
                     }
 
-                    poly_cypher(message, key, cypher);
-                    cout << "Your encrypted message is:" << ' ' << cypher << endl << endl;
+                    polyCipher(message, key, cipher);
+                    cout << "Your encrypted message is:" << ' ' << cipher << endl << endl;
                 }
                     break;
 
                 case 3: // Enc XOR Cipher
                 {
-                    string message, key, cypher, hex_cypher;
+                    string message, key, cipher, hex_cipher;
                     cout << "Enter the message you wish to encrypt:" << endl << ">>";
                     getline(cin, message);
 
@@ -388,9 +476,9 @@ void menu() {
                         onlySpaces = all_of(key.begin(), key.end(), [](char i) {return i == ' ';});
                     }
 
-                    xor_cypher(message, key, cypher, hex_cypher);
-                    cout << "Your encrypted message is:" << ' ' << cypher << endl;
-                    cout << "Hexadecimal hash for encryption:" << ' ' << hex_cypher << endl << endl;
+                    xorCipher(message, key, cipher, hex_cipher);
+                    cout << "Your encrypted message is:" << ' ' << cipher << endl;
+                    cout << "Hexadecimal hash for encryption:" << ' ' << hex_cipher << endl << endl;
                 }
                     break;
 
@@ -443,13 +531,13 @@ void menu() {
         }
             // Decrypting messages
         else if (choice_1 == "2") {
-            if (choice_2 == "1") { // Dec First cypher
+            if (choice_2 == "1") { // Dec First cipher
                 cout << "2 and 1";
             }
-            else if (choice_2 == "2") { // Dec Second cypher
+            else if (choice_2 == "2") { // Dec Second cipher
                 cout << "2 and 2";
             }
-            else { // Dec XOR cypher
+            else { // Dec XOR cipher
                 string choice_xor;
                 // choice between decrypting a message or a hexadecimal hash
                 cout << "What would you like to decipher:\n"
@@ -464,7 +552,7 @@ void menu() {
                 }
 
                 if (choice_xor == "1"){
-                    string message, key, cypher, hex_cypher;
+                    string message, key, cipher, hex_cipher;
                     cout << "Enter the message you wish to encrypt:" << endl << ">>";
                     getline(cin, message);
 
@@ -519,38 +607,38 @@ void menu() {
                         }
                     }
 
-                    xor_cypher(message, key, cypher, hex_cypher);
-                    cout << "Your message is:" << ' ' << cypher << endl << endl;
+//                    xorDecipher(message, key, cipher, hex_cipher);
+                    cout << "Your message is:" << ' ' << cipher << endl << endl;
                     check = check2 = false; // check reset
                 }
                 else {
                     vector<char> char_list = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
                                               'A', 'B', 'C', 'D', 'E', 'F',
                                               'a', 'b', 'c', 'd', 'e', 'f'};
-                    string hex_cypher, key, message;
+                    string hex_cipher, key, message;
                     cout << "Enter the hexadecimal hash you wish to decipher:" << endl << ">>";
-                    getline(cin, hex_cypher);
-                    hex_cypher = removeSpaces(hex_cypher);
+                    getline(cin, hex_cipher);
+                    hex_cipher = removeSpaces(hex_cipher);
 
                     bool check = true; // setting a bool for if the input is invalid
-                    for (char i : hex_cypher) {
+                    for (char i : hex_cipher) {
                         if (find(char_list.begin(), char_list.end(), i) == char_list.end()) {
                             check = false;
                             break;
                         }
                     }
-                    while (!check or hex_cypher.empty()) {
-                        if (!check and !hex_cypher.empty()) {
+                    while (!check or hex_cipher.empty()) {
+                        if (!check and !hex_cipher.empty()) {
                             cout << "Hash can't contain special characters,\n"
                                     "and letters must be from [A, B, C, D, E, F], enter again:" << endl << ">>";
                         } else {
                             cout << "Hash can't be empty, enter again:" << endl << ">>";
                         }
-                        getline(cin, hex_cypher);
-                        hex_cypher = removeSpaces(hex_cypher);
+                        getline(cin, hex_cipher);
+                        hex_cipher = removeSpaces(hex_cipher);
 
                         // adjusting the bool for a recheck
-                        for (char i : hex_cypher) {
+                        for (char i : hex_cipher) {
                             if (find(char_list.begin(), char_list.end(), i) == char_list.end()) {
                                 check = false;
                                 break;
@@ -587,7 +675,7 @@ void menu() {
                         }
                     }
 
-                    xor_decipher(hex_cypher, key, message);
+                    xorDecipher(hex_cipher, key, message);
                     cout << "Your message is:" << ' ' << message << endl << endl;
                 }
             }
@@ -613,5 +701,8 @@ void menu() {
 }
 
 int main() {
-
+    string mes = "Ahmed@ 011570Sobhy MAZEN &0)&&## 011570658@5=2=", ci, final;
+    morseCipher(mes, ci);
+    morseDecipher(ci, final);
+    cout << ci << endl << final;
 }
