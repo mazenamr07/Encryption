@@ -14,6 +14,18 @@ string removeSpaces(string str) {
     return str;
 }
 
+// Function to check choice validity
+bool choiceCheck(const string& choice) {
+    vector<string> choices = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+
+    for (const string& i : choices) {
+        if (choice == i) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Function for encrypting text using the XOR Cypher
 void xor_cypher(const string& message, const string& key, string& cypher, string& hex_cypher) {
     vector<bitset<8>> bin_list;
@@ -248,7 +260,7 @@ void poly_decipher(const string& cyph_txt, const string& key, string& text) {
     text = b_txt;
 }
 
-int main() {
+void menu() {
     // menu start and choice
     cout << "Ahlan ya user ya habibi.\n"
             "What would you like to do today?\n";
@@ -259,107 +271,178 @@ int main() {
         cout << "1- Cipher a message\n"
                 "2- Decipher a message\n"
                 "3- End\n" << ">>";
-
         getline(cin, choice_1);
+
         // checking if input is valid
         while (choice_1 != "1" and choice_1 != "2" and choice_1 != "3") {
             cout << "Please select a valid option:\n" << ">>";
             getline(cin, choice_1);
         }
 
-        if (choice_1 == "3") {
+        if (choice_1 == "3") { // Exiting the program
             cout << "Bye bye!";
-            return 0;
+            break;
         }
 
         cout << "\nWhich Cipher would you like to choose?" << endl;
-        cout << "1- First cypher\n"
-                "2- Second cypher\n"
-                "3- XOR Cypher\n"
-                "4- Return\n" << ">>";
-
+        cout << "1- Morse Cipher\n"
+                "2- Polybius Square Cipher\n"
+                "3- XOR Cipher\n"
+                "4- Fourth Cipher\n"
+                "0- Return\n" << ">>";
         getline(cin, choice_2);
+
         // checking if input is valid
-        while (choice_2 != "1" and choice_2 != "2" and choice_2 != "3" and choice_2 != "4") {
+        while (!choiceCheck(choice_2)) {
             cout << "Please select a valid option:\n" << ">>";
             getline(cin, choice_2);
         }
 
-        if (choice_2 == "4") {
-            cout << "\nChoose again:" << endl;
-            continue;
-        }
+        // Encrypting messages
+        if (choice_1 == "1") {
+            switch(stoi(choice_2)) {
+                case 1: // Enc Morse Cipher
+                {
+                    string message, cypher;
 
-        if (choice_1 == "1") { // Encrypting messages
-            if (choice_2 == "1") { // Enc First cypher
-                cout << "1 and 1";
-            }
-            else if (choice_2 == "2") { // Enc Second cypher
-                cout << "1 and 2";
-            }
-            else { // Enc XOR cypher
-                string message, key, cypher, hex_cypher;
-                cout << "Enter the message you wish to encrypt:" << endl << ">>";
-                getline(cin, message);
-
-                bool check; // setting a bool for if the input is empty
-                for (char i : message) {
-                    if (!isspace(i)) {
-                        check = true;
-                    } else {
-                        check = false;
-                    }
                 }
+                    break;
 
-                // checking if the input is empty
-                while (!check) {
-                    cout << "Message can't be empty, enter again:" << endl << ">>";
+                case 2: // Enc Polybius Cipher
+                {
+                    string message, key, cypher;
+                    cout << "Enter the message you wish to encrypt:" << endl << ">>";
                     getline(cin, message);
 
-                    // adjusting the bool for a recheck
-                    for (char i : message) {
-                        if (!isspace(i)) {
-                            check = true;
+                    bool onlySpaces = all_of(message.begin(), message.end(), [](char i) { return i == ' '; });
+                    bool aDigit = any_of(message.begin(), message.end(), [](char i) { return isdigit(i); });
+
+                    while (message.empty() or onlySpaces or aDigit) {
+                        if (message.empty() or onlySpaces) {
+                            cout << "Message can't be empty, enter again:" << endl << ">>";
+                            getline(cin, message);
+
+                            aDigit = any_of(message.begin(), message.end(), [](char i) { return isdigit(i); });
+                            onlySpaces = all_of(message.begin(), message.end(), [](char i) { return i == ' '; });
                         } else {
-                            check = false;
+                            cout << "Message can't contain numbers, enter again:" << endl << ">>";
+                            getline(cin, message);
+
+                            onlySpaces = all_of(message.begin(), message.end(), [](char i) { return i == ' '; });
+                            aDigit = any_of(message.begin(), message.end(), [](char i) { return isdigit(i); });
                         }
                     }
-                }
 
-                cout << "Enter your key:" << endl << ">>";
-                getline(cin, key);
-
-                bool check2; // setting a bool for if the input is empty
-                for (char i : key) {
-                    if (!isspace(i)) {
-                        check2 = true;
-                    } else {
-                        check2 = false;
-                    }
-                }
-
-                // checking if the input is empty
-                while (!check2) {
-                    cout << "Key can't be empty, enter again:" << endl << ">>";
+                    cout << "Enter your key:" << endl << ">>";
                     getline(cin, key);
 
-                    // adjusting the bool for a recheck
-                    for (char i : key) {
-                        if (!isspace(i)) {
-                            check2 = true;
+                    onlySpaces = all_of(key.begin(), key.end(), [](char i) { return i == ' '; });
+                    bool limitDigit = any_of(key.begin(), key.end(), [](char i) { return i < 49 or i > 53; });
+
+                    while (key.empty() or onlySpaces or key.size() != 5 or limitDigit) {
+                        if (key.empty() or onlySpaces) {
+                            cout << "Key can't be empty, enter again:" << endl << ">>";
+                            getline(cin, key);
+
+                            limitDigit = any_of(key.begin(), key.end(), [](char i) { return i < 49 or i > 53; });
+                            onlySpaces = all_of(key.begin(), key.end(), [](char i) { return i == ' '; });
                         } else {
-                            check2 = false;
+                            cout << "Key must consist of 5 digits from (1-5),\n"
+                                    "e.g. 12435, enter again:" << endl << ">>";
+                            getline(cin, key);
+
+                            limitDigit = any_of(key.begin(), key.end(), [](char i) { return i < 49 or i > 53; });
+                            onlySpaces = all_of(message.begin(), message.end(), [](char i) { return i == ' '; });
                         }
                     }
-                }
 
-                xor_cypher(message, key, cypher, hex_cypher);
-                cout << "Your encrypted message is:" << ' ' << cypher << endl;
-                cout << "Hexadecimal hash for encryption:" << ' ' << hex_cypher << endl << endl;
-                check = check2 = false; // check reset
+                    poly_cypher(message, key, cypher);
+                    cout << "Your encrypted message is:" << ' ' << cypher << endl << endl;
+                }
+                    break;
+
+                case 3: // Enc XOR Cipher
+                {
+                    string message, key, cypher, hex_cypher;
+                    cout << "Enter the message you wish to encrypt:" << endl << ">>";
+                    getline(cin, message);
+
+                    bool onlySpaces = all_of(message.begin(), message.end(), [](char i) {return i == ' ';});
+
+                    while (message.empty() or onlySpaces) { // Checking if input is empty
+                        cout << "Message can't be empty, enter again:" << endl << ">>";
+                        getline(cin, message);
+
+                        onlySpaces = all_of(message.begin(), message.end(), [](char i) {return i == ' ';});
+                    }
+
+                    cout << "Enter your key:" << endl << ">>";
+                    getline(cin, key);
+
+                    onlySpaces = all_of(key.begin(), key.end(), [](char i) {return i == ' ';});
+
+                    while (key.empty() or onlySpaces) { // Checking if input is empty
+                        cout << "Key can't be empty, enter again:" << endl << ">>";
+                        getline(cin, key);
+
+                        onlySpaces = all_of(key.begin(), key.end(), [](char i) {return i == ' ';});
+                    }
+
+                    xor_cypher(message, key, cypher, hex_cypher);
+                    cout << "Your encrypted message is:" << ' ' << cypher << endl;
+                    cout << "Hexadecimal hash for encryption:" << ' ' << hex_cypher << endl << endl;
+                }
+                    break;
+
+                case 4: // Enc XOR Cipher
+                {
+
+                }
+                    break;
+
+                case 5: // Enc XOR Cipher
+                {
+
+                }
+                    break;
+
+                case 6: // Enc XOR Cipher
+                {
+
+                }
+                    break;
+
+                case 7: // Enc XOR Cipher
+                {
+
+                }
+                    break;
+
+                case 8: // Enc XOR Cipher
+                {
+
+                }
+                    break;
+
+                case 9: // Enc XOR Cipher
+                {
+
+                }
+                    break;
+
+                case 10: // Enc XOR Cipher
+                {
+
+                }
+                    break;
+
+                default:
+                    cout << "\nChoose again:" << endl;
+                    continue;
             }
         }
-        if (choice_1 == "2") { // Decrypting messages
+            // Decrypting messages
+        else if (choice_1 == "2") {
             if (choice_2 == "1") { // Dec First cypher
                 cout << "2 and 1";
             }
@@ -515,17 +598,20 @@ int main() {
         cout << "1- Yes, use again\n"
                 "2- No, exit\n" << ">>";
         getline(cin, choice_3);
+
         // checking if input is valid
         while (choice_3 != "1" and choice_3 != "2") {
             cout << "Please select a valid option:\n" << ">>";
             getline(cin, choice_3);
         }
 
-        if (choice_3 == "2") {
+        if (choice_3 == "2") { // Exiting the program
             cout << "Bye bye!";
-            return 0;
+            break;
         }
-
-
     }
+}
+
+int main() {
+
 }

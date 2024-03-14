@@ -30,10 +30,16 @@ make
 
 ### List of cyphers available:
 + *** Cypher
+
+
 + Polybius Square Cypher, notes:
   + Special characters don't get encrypted
   + This cypher can't encrypt numbers
+
+
 + XOR Cypher, outputs:
   + Cyphered message
   + Hexadecimal hash to use for deciphering
+
+
 + *** Cypher
