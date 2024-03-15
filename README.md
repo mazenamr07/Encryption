@@ -1,10 +1,10 @@
 # Encryption
 This tool was made as an assignment for college.
 
-it's used for encrypting or decrypting messages using various cyphers.
+it's used for encrypting or decrypting messages using various ciphers.
 To start using it,
-simply choose whether to encrypt or decrypt,
-then select a cypher, then put in your message.
+simply choose whether you want to encrypt or decrypt text,
+then choose a cipher, then put in your message.
 
 ## Prerequisites
 - **g++ compiler**
